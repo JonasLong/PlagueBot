@@ -7,25 +7,26 @@ import time
 
 class ConfigFiles:
     curdir=os.path.curdir
-
-    global_config_folder=os.path.join(curdir,"guildConfig")
+    
     conf_file="config.json"
     inst_ids=[]
     inst_pointers=[]
+    folders={"guild":"guildConfig"}
 
     @classmethod
-    def get_inst(cls,type,id):
-        guildid=str(guildid)
+    def get_inst(cls,folder_type,id):
+        guildid=str(id)+folder_type
         if guildid in cls.inst_ids:
             return cls.inst_pointers[cls.inst_ids.index(guildid)]
         else:
-            return ConfigFiles(guildid)
+            return ConfigFiles(id,folder_type)
 
-    def __init__(self,id):
-        self.id=str(guildid)
+    def __init__(self,id,folder_type):
+        self.id=str(id)
         self.dict_loaded=False
+        self.folder=os.path.join(ConfigFiles.curdir,ConfigFiles.folders[folder_type])
         assert not self.id+self.folder in ConfigFiles.inst_ids
-        ConfigFiles.inst_ids.append(self.id)
+        ConfigFiles.inst_ids.append(self.id+folder_type)
         ConfigFiles.inst_pointers.append(self)
 
     def __del__(self):
@@ -45,12 +46,12 @@ class ConfigFiles:
         self.save_dict()
 
     def load_dict(self):
-        self.dictionary=ConfigFiles._load_json(self.id)
+        self.dictionary=self._load_json(self.id,self.folder)
         self.dict_loaded=True
 
     def save_dict(self):
         #Save
-        ConfigFiles._export_json(self.dictionary,self.id)
+        self._export_json(self.dictionary,self.id,self.folder)
 
     @classmethod
     def load_text(cls,filename):
@@ -60,10 +61,10 @@ class ConfigFiles:
         return res
 
     @classmethod
-    def _check_folder_exists(cls,folder_path):
-        assert os.path.exists(cls.global_config_folder)
-        if not os.path.exists(folder_path):
-            print("guild folder does not exist, creating",folder_path)
+    def _check_folder_exists(self,folder,sub_path):
+        assert os.path.exists(folder)
+        if not os.path.exists(sub_path):
+            print("guild folder does not exist, creating",sub_path)
             os.mkdir(folder_path)
 
     @classmethod
@@ -74,21 +75,20 @@ class ConfigFiles:
             print("Created file",file_path)
 
     @classmethod
-    def _export_json(cls,data,guildid):
+    def _export_json(cls,data,id,folder):
         print("File write")
-        folder_path=os.path.join(cls.global_config_folder,guildid)
-        file_path=os.path.join(folder_path,cls.conf_file)
-        cls._check_folder_exists(folder_path)
+        folder_path=os.path.join(folder,id)
+        file_path=os.path.join(folder,cls.conf_file)
+        cls._check_folder_exists(folder,folder_path)
 
         with open(file_path,"w") as file:
             json.dump(data,file)
 
-    @classmethod
-    def _load_json(cls,guildid):
+    def _load_json(cls,id,folder):
         print("File read")
-        folder_path=os.path.join(cls.global_config_folder,guildid)
+        folder_path=os.path.join(folder,id)
         file_path=os.path.join(folder_path,cls.conf_file)
-        cls._check_folder_exists(folder_path)
+        cls._check_folder_exists(folder,folder_path)
         cls._check_file_exists(file_path)
 
         with open(file_path,"r") as file:
@@ -100,8 +100,8 @@ class Diseases:
     @classmethod
     async def handle_messages(cls,msg):
 
-        cur_server_inst=Diseases(msg.guild)
-        server_inst=ConfigFiles.get_inst(cur_server_inst)
+        cur_server_inst=msg.guild
+        server_inst=ConfigFiles.get_inst("guild",cur_server_inst)
         server_inst.get_tag("diseases",[])
 
     @classmethod
@@ -121,12 +121,12 @@ class BotCommands:
     async def handle_message(cls,msg):
         is_cmd=await cls.try_run_as_command(msg)
         if not is_cmd:
-            await Diseases.handle_message(msg)
+            await Diseases.handle_messages(msg)
 
     @classmethod
     async def try_run_as_command(cls,msg):
         #Get an instance of the config for this guild
-        conf=ConfigFiles.get_inst(msg.guild)
+        conf=ConfigFiles.get_inst("guild",msg.guild)
         prefix=conf.get_tag("conf").get("pre","!")
 
         c=cls.is_command(msg,prefix)
@@ -296,12 +296,10 @@ class BotActions:
         print(f'{client.user} has connected to Discord!')
         print(cls.client.user, "is connected to the following guilds:")
         for guild in cls.client.guilds:
-            print(guild.name,"(id:"+str(guild.id)+")")
+            print("\t"+guild.name,"(id:"+str(guild.id)+")")
 
         await cls.set_status("Plague INC", discord.Status.online)
 
-        cls.role=guild.roles[1]
-        print("roles:",guild.roles)
         print("\nREADY\n")
 
     @classmethod
