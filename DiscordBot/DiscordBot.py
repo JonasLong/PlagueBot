@@ -78,7 +78,7 @@ class ConfigFiles:
     def _export_json(cls,data,id,folder):
         print("File write")
         folder_path=os.path.join(folder,id)
-        file_path=os.path.join(folder,cls.conf_file)
+        file_path=os.path.join(folder_path,cls.conf_file)
         cls._check_folder_exists(folder,folder_path)
 
         with open(file_path,"w") as file:
