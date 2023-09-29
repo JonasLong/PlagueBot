@@ -10,7 +10,6 @@ class MyClient(discord.Client):
         print('Logged in as', self.user)
 
     async def on_message(self, message):
-        print("new message")
         await handler.handle(message)
         
 

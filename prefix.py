@@ -9,17 +9,21 @@ class prefix(command.command):
         return "prefix <new prefix>"
 
     @classmethod
-    def num_args(cls) -> int:
-        return 1
+    def _check_argnum(cls, arglen: int) -> bool:
+        return arglen < 2
 
     @classmethod
     async def handle(cls, args: list, data_handle: data, channel: discord.TextChannel):
-        pre = args[0]
-        if(pre==data_handle.get("prefix", None)):
-            await channel.send("Prefix is already set to `{0}`".format(pre))
-            return
+        cur_prefix = data_handle.get("prefix", None)
+        if(len(args)==0):
+            await channel.send("Prefix is set to `{0}`".format(cur_prefix))
         
-        print("changing prefix to {0}".format(pre))
-        
-        data_handle.set("prefix", pre)
-        await channel.send("Changed prefix to `{0}`".format(pre))
+        else:
+            pre = args[0]
+            if(pre==cur_prefix):
+                await channel.send("Prefix is already set to `{0}`".format(pre))
+            else:
+                print("changing prefix to {0}".format(pre))
+                
+                data_handle.set("prefix", pre)
+                await channel.send("Changed prefix to `{0}`".format(pre))
