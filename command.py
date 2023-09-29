@@ -29,6 +29,6 @@ class command(ABC):
 
     @classmethod
     @abstractmethod
-    def handle(cls, args: list, data_handle: data, channel: discord.channel):
+    async def handle(cls, args: list, data_handle: data, channel: discord.TextChannel):
         pass
     

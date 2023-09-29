@@ -13,9 +13,13 @@ class prefix(command.command):
         return 1
 
     @classmethod
-    def handle(cls, args: list, data_handle: data, channel: discord.TextChannel):
+    async def handle(cls, args: list, data_handle: data, channel: discord.TextChannel):
         pre = args[0]
-        print("changing prefix to", pre)
+        if(pre==data_handle.get("prefix", None)):
+            await channel.send("Prefix is already set to `{0}`".format(pre))
+            return
         
-        data_handle.set("prefix",pre)
-        channel.
+        print("changing prefix to {0}".format(pre))
+        
+        data_handle.set("prefix", pre)
+        await channel.send("Changed prefix to `{0}`".format(pre))

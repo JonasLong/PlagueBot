@@ -49,5 +49,5 @@ class cmd_handler:
                 return
             
         if(await c.check_args(args, channel)):
-            c.handle(args, self.data_handle, channel)
+            await c.handle(args, self.data_handle, channel)
         
