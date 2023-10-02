@@ -11,7 +11,7 @@ class command(ABC):
 
     @classmethod
     async def check_args(cls, args, channel: discord.TextChannel) -> bool:
-        if(cls._check_argnum(len(args))):
+        if(cls._validate_args(args)):
             return True
         else:
             await cls.send_help_msg(channel)
@@ -24,11 +24,11 @@ class command(ABC):
 
     @classmethod
     @abstractmethod
-    def _check_argnum(cls, arglen: int) -> bool:
+    def _validate_args(cls, args: list) -> bool:
         pass
 
     @classmethod
     @abstractmethod
-    async def handle(cls, args: list, data_handle: data, channel: discord.TextChannel):
+    async def handle(cls, args: list, data_handle: data, message: discord.Message):
         pass
     
