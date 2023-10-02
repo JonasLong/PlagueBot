@@ -1,8 +1,8 @@
 import command
-from data import data
+from data import Data
 import discord
 
-class prefix(command.command):
+class Prefix(command.Command):
     
     @classmethod
     def help_text(cls) -> str:
@@ -13,7 +13,7 @@ class prefix(command.command):
         return len(args) < 3
 
     @classmethod
-    async def handle(cls, args: list, data_handle: data, message: discord.Message):
+    async def handle(cls, args: list, data_handle: Data, message: discord.Message):
         cur_prefix = data_handle.get("prefix", None)
         channel=message.channel
         if(len(args)==1):

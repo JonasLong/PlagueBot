@@ -1,7 +1,7 @@
 import json
 import os
 
-class data:
+class Data:
     fname= "data/data.txt"
 
     @classmethod
@@ -27,4 +27,4 @@ class data:
         cls._data[key]= value
         cls._save()
 
-data._load()
+Data._load()

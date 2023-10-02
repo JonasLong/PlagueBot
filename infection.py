@@ -1,8 +1,11 @@
 from enum import Enum
 import discord
+import random
 
 class Infection:
     Status = Enum("Status", ["Healthy", "Infected", "Dead"])
+
+    corpse_transmission = True
 
     @classmethod
     async def set_status(cls, new_status: Status, member: discord.Member):
@@ -28,7 +31,36 @@ class Infection:
     async def role_setup(cls, guild: discord.Guild):
         #TODO
         pass
+
+    @classmethod
+    async def try_advance_infection(cls, target: discord.Member) -> Status | None:
+        status = await cls.get_status(target)
+        if status == cls.Status.Infected:
+            r = random.random()
+            print(r)
+            if(r < cls.heal_chance):
+                await  cls.set_status(cls.Status.Healthy, target)
+                return cls.Status.Healthy
+            
+            elif(r < cls.heal_chance + cls.death_chance):
+                await cls.set_status(cls.Status.Dead, target)
+                return cls.Status.Dead
+            
+        return None
     
+    @classmethod
+    async def try_pass_infection(cls, source: discord.Member, dest: discord.Member) -> bool:
+        src_status = await cls.get_status(source)
+        dst_status = await cls.get_status(dest)
+        if(src_status == cls.Status.Infected or (cls.corpse_transmission and src_status == cls.Status.Dead)):
+            if(dst_status == cls.Status.Healthy):
+                r = random.random()
+                if(r < cls.infection_chance):
+                    await cls.set_status(cls.Status.Infected, dest)
+                    return True
+        return False
+
+
     @classmethod
     async def _get_status_role_for_member(cls, status: Status, member: discord.Member) -> discord.Role | None:
         return discord.utils.get(member.roles, name=status.name)

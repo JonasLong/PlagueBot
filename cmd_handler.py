@@ -1,14 +1,16 @@
 import discord
-from data import data
+from data import Data
 
-from prefix import prefix
-from command import command
-from infection_cmd import infection_cmd
+from prefix import Prefix
+from command import Command
+from help_cmd import HelpCmd
+from infection_cmd import InfectionCmd
+from statistics_cmd import StatisticsCmd
 
-class cmd_handler:
+class CmdHandler:
     
     def __init__(self):
-        self.data_handle = data()
+        self.data_handle = Data()
 
     @property
     def prefix(self):
@@ -16,7 +18,7 @@ class cmd_handler:
 
     def is_command(self, message) -> bool:
         if(message.content.startswith(self.prefix)):
-            print("iscommand = true")
+            #print("iscommand = true")
             return True
         return False
     
@@ -34,19 +36,22 @@ class cmd_handler:
 
         print("command!")
 
-        c: command = None
+        c: Command = None
 
         match cmd_txt:
+            case "help" | "helo":
+                c=HelpCmd
             case "prefix":
-                c=prefix
+                c=Prefix
             case "kill" | "heal" | "infect":
-                c=infection_cmd
+                c=InfectionCmd
             case "updateroles":
-                pass
+                pass #TODO
+            case "stats" | "infc" | "deathc" | "healc":
+                c=StatisticsCmd
             case _:
-                await message.channel.send("Unknown command \"{0}\"".format(cmd_txt))
+                await message.channel.send("Unknown command \"{0}\". Try `help` for a list of commands".format(discord.utils.escape_mentions(cmd_txt)))
                 return
             
         if(await c.check_args(args, channel)):
             await c.handle(args, self.data_handle, message)
-        

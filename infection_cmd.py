@@ -1,20 +1,20 @@
 import command
-from data import data
+from data import Data
 import discord
 from infection import Infection
 
-class infection_cmd(command.command):
-    
+class InfectionCmd(command.Command):
+
     @classmethod
     def help_text(cls) -> str:
-        return "[infect/kill/heal] [optional: username]"
+        return "[infect/kill/heal] <username>"
 
     @classmethod
     def _validate_args(cls, args: list) -> bool:
         return len(args) < 3
 
     @classmethod
-    async def handle(cls, args: list, data_handle: data, message: discord.Message):
+    async def handle(cls, args: list, data_handle: Data, message: discord.Message):
         channel = message.channel
         if(len(args)==1):
             target = message.author
@@ -39,7 +39,7 @@ class infection_cmd(command.command):
                 msg_txt="healed"
 
         if status == await Infection.get_status(target):
-            await channel.send("{0} is already {1}.".format(target.mention, msg_txt));
+            await channel.send("{0} is already {1}.".format(target.mention, msg_txt))
         
         else:
             await Infection.set_status(status, target)

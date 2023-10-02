@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 import discord
-from data import data
+from data import Data
 
-class command(ABC):
+class Command(ABC):
 
     @classmethod
     @abstractmethod
@@ -29,6 +29,6 @@ class command(ABC):
 
     @classmethod
     @abstractmethod
-    async def handle(cls, args: list, data_handle: data, message: discord.Message):
+    async def handle(cls, args: list, data_handle: Data, message: discord.Message):
         pass
     
