@@ -10,6 +10,9 @@ class PBClient(discord.Client):
     msg_handle: MsgHandler
     cmd_handle: CmdHandler
 
+    async def on_guild_join(self, guild):
+        await JoinMessager.check_guilds(self)
+
     async def on_ready(self):
         print('Logged in as', self.user)
         await JoinMessager.check_guilds(self)
@@ -27,6 +30,8 @@ class PBClient(discord.Client):
 
 intents = discord.Intents.default()
 intents.message_content = True
+intents.guilds = True
+intents.members = True
 
 client = PBClient(intents=intents)
 client.msg_handle = MsgHandler()

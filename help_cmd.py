@@ -5,7 +5,7 @@ from data import Data
 class HelpCmd(Command):
 
     @classmethod
-    def help_text(cls) -> str:
+    def help_text(cls) -> str | list[str]:
         return "help"
 
     @classmethod
@@ -22,6 +22,12 @@ class HelpCmd(Command):
             build="**Commands:**\n"
             for sc in Command.__subclasses__():
                 sc: Command
-                build+="\- `{0}`\n".format(sc.help_text())
+                help_txt = sc.help_text()
 
+                if not isinstance(help_txt, list):
+                    help_txt = [help_txt]
+                
+                for i in help_txt:
+                    build+="\- `{0}`\n".format(i)
+                
             await channel.send(build.strip())

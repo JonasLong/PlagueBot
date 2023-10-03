@@ -17,7 +17,7 @@ If you already have roles you want to use for this purpose, rename those roles t
 Are you sure you want to create new roles? If so, run this command again as `rolesetup confirm`"""
 
     @classmethod
-    def help_text(cls) -> str:
+    def help_text(cls) -> str | list[str]:
         return "rolesetup"
 
     @classmethod

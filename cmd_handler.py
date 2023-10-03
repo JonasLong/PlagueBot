@@ -1,10 +1,11 @@
 import discord
 from data import Data
 
-from prefix import Prefix
+from prefix_cmd import PrefixCmd
 from command import Command
 from help_cmd import HelpCmd
 from infection_cmd import InfectionCmd
+from randominfect_cmd import RandomInfectCmd
 from statistics_cmd import StatisticsCmd
 from role_setup_cmd import RoleSetupCmd
 
@@ -43,9 +44,11 @@ class CmdHandler:
             case "help" | "helo":
                 c=HelpCmd
             case "prefix":
-                c=Prefix
+                c=PrefixCmd
             case "kill" | "heal" | "infect":
                 c=InfectionCmd
+            case "randominfect":
+                c=RandomInfectCmd
             case "rolesetup": # | "setrole" | "viewroles":
                 c=RoleSetupCmd
             case "stats" | "healc" | "infc" | "deathc":

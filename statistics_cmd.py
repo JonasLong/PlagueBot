@@ -7,8 +7,8 @@ class StatisticsCmd(command.Command):
     pstrs = ["Heal chance","Infection chance","Death chance"]
 
     @classmethod
-    def help_text(cls) -> str:
-        return "[stats] OR [healc/infc/deathc] <new probability>"
+    def help_text(cls) -> str | list[str]:
+        return ["stats", "[healc/infc/deathc] <new probability>"]
 
     @classmethod
     def _validate_args(cls, args: list) -> bool:

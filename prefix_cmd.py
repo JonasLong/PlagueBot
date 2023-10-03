@@ -2,10 +2,10 @@ import command
 from data import Data
 import discord
 
-class Prefix(command.Command):
+class PrefixCmd(command.Command):
     
     @classmethod
-    def help_text(cls) -> str:
+    def help_text(cls) -> str | list[str]:
         return "prefix <new prefix>"
 
     @classmethod

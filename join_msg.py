@@ -6,7 +6,7 @@ class JoinMessager:
     join_text = """:biohazard: **Thanks for using PlagueBot!** :biohazard:
 
 For a list of commands, run `!help`.
-Inital setup requires creating `Healthy`, `Infected`, and `Dead` roles. This can be done automatically with `!createroles`.
+Inital setup requires creating `Healthy`, `Infected`, and `Dead` roles. This can be done automatically with `!rolesetup`.
 These roles will be auto-assigned to users by PlagueBot, so you can create channels exclusive to each role."""
 
     @classmethod

@@ -6,7 +6,7 @@ class Command(ABC):
 
     @classmethod
     @abstractmethod
-    def help_text(cls) -> str:
+    def help_text(cls) -> str | list[str]:
         pass
 
     @classmethod
@@ -19,7 +19,15 @@ class Command(ABC):
 
     @classmethod
     async def send_help_msg(cls, channel: discord.TextChannel):
-        await channel.send("Usage: `"+cls.help_text()+"`")
+        help_txt = cls.help_text()
+        
+        if isinstance(help_txt, list):
+            build="Usage:"
+            for i in help_txt:
+                build+="\n`{0}`".format(i)
+            await channel.send(build)
+        else:
+            await channel.send("Usage: `{0}`".format(help_txt))
 
 
     @classmethod

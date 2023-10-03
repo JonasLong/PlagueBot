@@ -6,8 +6,8 @@ from infection import Infection
 class InfectionCmd(command.Command):
 
     @classmethod
-    def help_text(cls) -> str:
-        return "[infect/kill/heal] <username>"
+    def help_text(cls) -> str | list[str]:
+        return ["[infect/kill/heal] <user mention>", "randominfect <num users>"]
 
     @classmethod
     def _validate_args(cls, args: list) -> bool:
