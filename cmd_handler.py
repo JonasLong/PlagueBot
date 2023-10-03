@@ -6,6 +6,7 @@ from command import Command
 from help_cmd import HelpCmd
 from infection_cmd import InfectionCmd
 from randominfect_cmd import RandomInfectCmd
+from infectall_cmd import InfectAllCmd
 from statistics_cmd import StatisticsCmd
 from role_setup_cmd import RoleSetupCmd
 
@@ -49,6 +50,8 @@ class CmdHandler:
                 c=InfectionCmd
             case "randominfect":
                 c=RandomInfectCmd
+            case "infectall" | "healall" | "killall":
+                c=InfectAllCmd
             case "rolesetup": # | "setrole" | "viewroles":
                 c=RoleSetupCmd
             case "stats" | "healc" | "infc" | "deathc":

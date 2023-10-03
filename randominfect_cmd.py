@@ -35,7 +35,11 @@ class RandomInfectCmd(command.Command):
                     healthy.remove(i)
 
             if(numInfections > len(healthy)):
-                await channel.send("Number to infect is greater than the number of healthy members ({0}).".format(len(healthy)))
+                if(len(healthy)==0):
+                    await channel.send("There are no healthy members. First run `heal` or `healall`.")
+                else:
+                    await channel.send("Number to infect is greater than the number of healthy members ({0}).".format(len(healthy)))
+
 
             else:
                 random.shuffle(healthy)
