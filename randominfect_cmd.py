@@ -30,7 +30,7 @@ class RandomInfectCmd(command.Command):
         else:
             role: discord.Role = await Infection._get_status_role_for_guild(Infection.Status.Healthy, channel.guild)
             healthy: list[discord.Member] = role.members[:]
-            for i in healthy:
+            for i in role.members:
                 if i.bot:
                     healthy.remove(i)
 

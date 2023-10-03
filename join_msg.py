@@ -32,18 +32,18 @@ These roles will be auto-assigned to users by PlagueBot, so you can create chann
         
     @classmethod
     async def get_target_channel(cls, client: discord.Client, guild: discord.Guild) -> discord.TextChannel | None:
-
-        channels = guild.text_channels[:]
+        channels=guild.text_channels
+        channels_copy = channels[:]
         for c in channels:
             if(not await cls.has_perms(client, c)):
-                channels.remove(c)
+                channels_copy.remove(c) #TODO check if this is valid in the for loop
             else:
                 if await cls.is_ideal(c.name):
                     return c
                 
         if len(channels)==0:
             return None
-        return channels[0]
+        return channels_copy[0]
 
     @classmethod
     async def is_ideal(cls, channel_name: str):

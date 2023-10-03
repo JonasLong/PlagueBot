@@ -21,6 +21,7 @@ class MsgHandler:
             self.messages[channel] = msgs
         
         self._prune_msgs(msgs)
+        print("{0} messages remaining after pruing".format(len(msgs)))
 
         if(len(msgs) > 0):
             last: discord.Message = msgs[-1]
@@ -46,18 +47,24 @@ class MsgHandler:
         msgs.append(message)
         
     def _prune_msgs(self, msgs: list):
+        ttl: int = Data.get("msg_ttl_secs", self.default_msg_ttl_secs)
+        prune=[]
         if(len(msgs) > 0):
-            #print("pruning msgs from this channel...")
+            print("pruning msgs from this channel...")
             for i in msgs:
                 i: discord.Message
                 age: datetime.timedelta = datetime.datetime.now(datetime.timezone.utc) - i.created_at
-                if age.total_seconds() > Data.get("msg_ttl_secs", self.default_msg_ttl_secs):
-                    #print("message is {0}s old, pruning".format(age.total_seconds()))
-                    msgs.remove(i)
+                if age.total_seconds() > ttl:
+                    print("message is {0}s old, pruning".format(age.total_seconds()))
+                    prune.append(i)
                 else:
-                    #print("message within time to live ({0}s), ending pruning".format(age.total_seconds()))
-                    return
-            #print("all messages were pruned")
+                    print("message within time to live ({0}s), ending pruning".format(age.total_seconds()))
+                    break
+
+            for i in prune:
+                msgs.remove(i)
+            if(len(msgs)==0):
+                print("all messages were pruned")
 
 
         
