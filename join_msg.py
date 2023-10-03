@@ -11,12 +11,12 @@ These roles will be auto-assigned to users by PlagueBot, so you can create chann
 
     @classmethod
     async def check_guilds(cls, client: discord.Client):
-        known_guilds = Data.get("guilds",[])
+        known_guilds: list = Data.get("guilds", [])
         new = False
         for g in client.guilds:
-            if(not g in known_guilds):
+            if(not g.id in known_guilds):
                 await cls.message(client, g)
-                known_guilds.add(g)
+                known_guilds.append(g.id)
                 new = True
         
         if new:

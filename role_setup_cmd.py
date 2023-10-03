@@ -4,8 +4,13 @@ import discord
 from infection import Infection
 
 class RoleSetupCmd(command.Command):
+    red = discord.Colour.from_str("#ff0000")
+    yellow = discord.Colour.from_str("#F1C40F")
+    green = discord.Colour.green()
 
-    t="""Running this command will create 3 new vanity roles named `Healthy`, `Infected`, and `Dead`.
+    colors = [green, yellow, red]
+
+    t=""":warning: Running this command will create 3 new vanity roles named `Healthy`, `Infected`, and `Dead`.
 If you already have roles you want to use for this purpose, rename those roles to the above names.
 (Names are case-sensitive and should not be duplicated)
 
@@ -36,7 +41,9 @@ Are you sure you want to create new roles? If so, run this command again as `rol
 
             elif(args[1]=="confirm"):
                 for i in Infection.Status:
-                    await guild.create_role(mentionable=False, name=i.name, reason="PlagueBot role setup")
+                    color: discord.Colour = cls.colors[i.value-1]
+                    await guild.create_role(mentionable=False, name=i.name, reason="PlagueBot role setup", color=color)
+                await channel.send("Roles created successfully!")
 
             else:
                 await channel.send("Invalid argument")
