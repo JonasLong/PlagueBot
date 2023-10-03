@@ -34,10 +34,10 @@ class CmdHandler:
         cmd_txt = args[0]
 
         if(len(cmd_txt)==0):
-            print("not command")
+            #print("not command")
             return
 
-        print("command!")
+        #print("command!")
 
         c: Command = None
 

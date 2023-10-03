@@ -40,7 +40,7 @@ class Infection:
         status = await cls.get_status(target)
         if status == cls.Status.Infected:
             r = random.random()
-            print(r)
+            #print(r)
             heal_chance = cls.get_chance_from_status(cls.Status.Healthy)
             die_chance = cls.get_chance_from_status(cls.Status.Dead)
 

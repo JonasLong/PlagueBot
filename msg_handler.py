@@ -49,7 +49,7 @@ class MsgHandler:
             for i in msgs:
                 i: discord.Message
                 age: datetime.timedelta = datetime.datetime.now(datetime.timezone.utc) - i.created_at
-                if age.total_seconds() > Data.get("msg_ttl_secs", self.default_max_msg_age_sec):
+                if age.total_seconds() > Data.get("msg_ttl_secs", self.default_msg_ttl_secs):
                     #print("message is {0}s old, pruning".format(age.total_seconds()))
                     msgs.remove(i)
                 else:

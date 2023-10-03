@@ -17,6 +17,10 @@ class InfectAllCmd(command.Command):
     async def handle(cls, args: list, data_handle: Data, message: discord.Message):
         channel = message.channel
         
+        if(not message.author.guild_permissions.administrator):
+            await channel.send("Only an administrator can use this command!")
+            return
+
         match args[0]:
             case "infectall":
                 status = Infection.Status.Infected
