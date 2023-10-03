@@ -6,7 +6,7 @@ from data import Data
 
 class MsgHandler:
     messages: dict = dict()
-    default_msg_ttl_secs = 10
+    default_msg_ttl_secs = 45
 
     def __init__(self):
         pass
@@ -24,16 +24,18 @@ class MsgHandler:
 
         if(len(msgs) > 0):
             last: discord.Message = msgs[-1]
-            other_member = last.author
-            if(other_member!=target_member):
-                print("New message from {0} -> {1}".format(other_member, target_member))
+            for msg in msgs:
+                other_member = msg.author
+                if(other_member!=target_member):
+                    print("Attempting infection for {0} -> {1}".format(other_member, target_member))
 
-                res = await Infection.try_pass_infection(other_member, target_member)
-                if(res):
-                    channel.send(":biohazard: {0} has passed their infection to {1} :biohazard:".format(other_member.mention, target_member.mention))
+                    res = await Infection.try_pass_infection(other_member, target_member)
+                    if(res):
+                        print("{0} infected by {1}".format(target_member.name, other_member.name))
+                        await channel.send(":biohazard: {0} has passed their infection to {1} :biohazard:".format(other_member.mention, target_member.mention))
+                        return
                 
-            else:
-                print("Repeat message by {0}".format(last.author))
+            print("{0} not infected by message".format(target_member))
 
         new_status = await Infection.try_advance_infection(target_member)
         if(new_status == Infection.Status.Healthy):

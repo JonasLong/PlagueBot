@@ -32,7 +32,7 @@ class InfectAllCmd(command.Command):
                 status = Infection.Status.Healthy
                 msg_txt="healed"
 
-
+        await channel.send("Healing all server members...\nPlease wait, this could take a little while")
         num_updated = 0
         async for m in message.guild.fetch_members():
             if(await Infection.get_status(m)!=status and not m.bot):

@@ -1,7 +1,4 @@
 import discord #pip install discord.py-self
-import io
-import time
-from data import Data
 from join_msg import JoinMessager
 from msg_handler import MsgHandler
 from cmd_handler import CmdHandler
@@ -24,7 +21,7 @@ class PBClient(discord.Client):
                 await self.cmd_handle.handle(message)
 
             else:
-                print("new message:", message.content)
+                #print("new message:", message.content)
                 await self.msg_handle.handle(message)
         
 
