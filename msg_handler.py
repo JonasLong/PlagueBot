@@ -29,7 +29,7 @@ class MsgHandler:
 
                 res = await Infection.try_pass_infection(other_member, target_member)
                 if(res):
-                    channel.send("{0} has passed their infection to {1}".format(other_member.mention, target_member.mention))
+                    channel.send(":biohazard: {0} has passed their infection to {1} :biohazard:".format(other_member.mention, target_member.mention))
                 
             else:
                 print("Repeat message by {0}".format(last.author))

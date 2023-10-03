@@ -45,9 +45,9 @@ class CmdHandler:
                 c=Prefix
             case "kill" | "heal" | "infect":
                 c=InfectionCmd
-            case "updateroles":
-                pass #TODO
-            case "stats" | "infc" | "deathc" | "healc":
+            #case "updateroles" | "setrole" | "viewroles":
+                #pass #TODO
+            case "stats" | "healc" | "infc" | "deathc":
                 c=StatisticsCmd
             case _:
                 await message.channel.send("Unknown command \"{0}\". Try `help` for a list of commands".format(discord.utils.escape_mentions(cmd_txt)))

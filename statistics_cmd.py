@@ -1,14 +1,14 @@
 import discord
 import command
 from data import Data
+from infection import Infection
 
 class StatisticsCmd(command.Command):
-    prop_names="infc,deathc,healc".split(",")
-    pstrs = ["Infection chance","Death chance","Heal chance"]
+    pstrs = ["Heal chance","Infection chance","Death chance"]
 
     @classmethod
     def help_text(cls) -> str:
-        return "[stats] OR [infc/deathc/healc] <new probability>"
+        return "[stats] OR [healc/infc/deathc] <new probability>"
 
     @classmethod
     def _validate_args(cls, args: list) -> bool:
@@ -20,8 +20,8 @@ class StatisticsCmd(command.Command):
     @classmethod
     async def handle(cls, args: list, data_handle: Data, message: discord.Message):
         chances=[]
-        for i in cls.prop_names:
-            chances.append(data_handle.get(i, 0.25))
+        for i in Infection.prop_names:
+            chances.append(data_handle.get(i, Infection.default_c))
 
         if args[0] == "stats":
                 build=""
@@ -30,7 +30,7 @@ class StatisticsCmd(command.Command):
                 build=build.strip()
                 await message.channel.send("**Stats:**\n"+build)
         else:
-            pos = cls.prop_names.index(args[0])
+            pos = Infection.prop_names.index(args[0])
 
             if(len(args) == 1):
                 await message.channel.send("{0}: `{1}`".format(cls.pstrs[pos], chances[pos]))
@@ -48,11 +48,14 @@ class StatisticsCmd(command.Command):
                 else:
                     chances[pos] = nval
 
-                    if not chances[1] + chances[2] <= 1:
+                    healc = chances[Infection.Status.Healthy.value-1]
+                    deathc = chances[Infection.Status.Dead.value-1]
+
+                    if healc + deathc > 1:
                         await message.channel.send("Invalid value `{0}`. Death chance and heal chance may not sum to more than `1.0`.".format(nval))
                     else:
                         #save values
-                        for index, val_name in enumerate(cls.prop_names):
+                        for index, val_name in enumerate(Infection.prop_names):
                             data_handle.set(val_name, chances[index])
                         
                         await message.channel.send("{0} set to `{1}`".format(cls.pstrs[pos], chances[pos]))
