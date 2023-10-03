@@ -28,7 +28,7 @@ class Infection:
             role = await cls._get_status_role_for_member(status, member)
             if(not role is None):
                 return status
-        return cls.Status.Healthy #default to healthy
+        return None
 
     @classmethod
     async def role_setup(cls, guild: discord.Guild):

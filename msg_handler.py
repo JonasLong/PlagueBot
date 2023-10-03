@@ -6,6 +6,7 @@ from data import Data
 
 class MsgHandler:
     messages: dict = dict()
+    default_msg_ttl_secs = 10
 
     def __init__(self):
         pass
@@ -48,7 +49,7 @@ class MsgHandler:
             for i in msgs:
                 i: discord.Message
                 age: datetime.timedelta = datetime.datetime.now(datetime.timezone.utc) - i.created_at
-                if age.total_seconds() > 10:
+                if age.total_seconds() > Data.get("msg_ttl_secs", self.default_max_msg_age_sec):
                     #print("message is {0}s old, pruning".format(age.total_seconds()))
                     msgs.remove(i)
                 else:
