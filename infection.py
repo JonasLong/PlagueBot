@@ -6,7 +6,7 @@ import random
 class Infection:
     Status = Enum("Status", ["Healthy", "Infected", "Dead"])
     prop_names="healc,infc,deathc".split(",")
-    default_c = .15
+    default_c = .10
 
     corpse_transmission = True
 
