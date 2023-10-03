@@ -7,7 +7,7 @@ class InfectionCmd(command.Command):
 
     @classmethod
     def help_text(cls) -> str | list[str]:
-        return ["[infect/kill/heal] <user mention>", "randominfect <num users>"]
+        return "[infect/kill/heal] <user mention>"
 
     @classmethod
     def _validate_args(cls, args: list) -> bool:
