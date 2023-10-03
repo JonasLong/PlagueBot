@@ -2,6 +2,7 @@ import discord #pip install discord.py-self
 import io
 import time
 from data import Data
+from join_msg import JoinMessager
 from msg_handler import MsgHandler
 from cmd_handler import CmdHandler
 
@@ -11,6 +12,7 @@ class PBClient(discord.Client):
 
     async def on_ready(self):
         print('Logged in as', self.user)
+        await JoinMessager.check_guilds(self)
 
     async def on_message(self, message: discord.Message):
         if(message.author!=self.user):

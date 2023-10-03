@@ -45,7 +45,7 @@ class CmdHandler:
                 c=Prefix
             case "kill" | "heal" | "infect":
                 c=InfectionCmd
-            #case "updateroles" | "setrole" | "viewroles":
+            #case "createroles" | "setrole" | "viewroles":
                 #pass #TODO
             case "stats" | "healc" | "infc" | "deathc":
                 c=StatisticsCmd
