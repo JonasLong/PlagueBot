@@ -1,5 +1,8 @@
 # PlagueBot
- Discord bot for simulating the spread of disease
+ This bot simulates the spread of a fictional disease within a Discord server (think Plague Inc.)
+
+ Users begin as Healthy and have a random chance to become Infected when chatting with an Infected user
+ Admins can configure the probability of transmission, recovery, and mortality using commands
 
 ## Commands
 - help: Displays help message
